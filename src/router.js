@@ -1,4 +1,4 @@
-import VueRouter from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 
 const routes = [
   {
@@ -6,10 +6,21 @@ const routes = [
     path: "/",
     component: () => import("./views/Home.vue"),
   },
+  {
+    name: "login",
+    path: "/login",
+    component: () => import("./views/Login.vue"),
+  },
+  {
+    name: "register",
+    path: "/register",
+    component: () => import("./views/Register.vue"),
+  },
 ];
 
-const router = new VueRouter({
-  routes, // short for `routes: routes`
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes,
 });
 
 export default router;
