@@ -19,6 +19,12 @@ const routes = [
     component: () => import("./views/Register.vue"),
   },
   {
+    name: "journal",
+    path: "/journal",
+    component: () => import("./views/journal.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
     name: "report-week",
     path: "/report/week",
     component: () => import("./views/WeekReport.vue"),
