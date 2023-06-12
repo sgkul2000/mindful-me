@@ -32,7 +32,8 @@ router.beforeEach(async (to, from, next) => {
   } catch (err) {
     console.error(err);
     if (from.name && (from.name !== "login" || from.name !== "register")) {
-      return next({ name: "login" });
+      if (to.name === "login" || to.name === "register") return next();
+      else return next({ name: "login" });
     }
     console.log("after return");
   }
