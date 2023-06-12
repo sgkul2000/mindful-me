@@ -4,4 +4,8 @@ import App from "./App.vue";
 
 import router from "./router";
 
-createApp(App).use(router).mount("#app");
+import store from "./store";
+
+import Notifications from "@kyvg/vue3-notification";
+
+createApp(App).use(router).use(store).use(Notifications).mount("#app");

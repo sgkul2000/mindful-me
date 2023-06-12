@@ -27,7 +27,7 @@ let api = {
   },
 
   createAccount: (email, password, name) => {
-    return api.provider().account.create('unique()', email, password, name);
+    return api.provider().account.create("unique()", email, password, name);
   },
 
   getAccount: () => {
@@ -39,17 +39,23 @@ let api = {
   },
 
   deleteCurrentSession: () => {
-    return api.provider().account.deleteSession('current');
+    return api.provider().account.deleteSession("current");
   },
 
   createDocument: (collectionId, data, userId) => {
     return api
       .provider()
-      .database.createDocument(Server.database, collectionId, 'unique()', data, [
-        Permission.read(Role.user(userId)),
-        Permission.update(Role.user(userId)),
-        Permission.delete(Role.user(userId))
-      ]);
+      .database.createDocument(
+        Server.database,
+        collectionId,
+        "unique()",
+        data,
+        [
+          Permission.read(Role.user(userId)),
+          Permission.update(Role.user(userId)),
+          Permission.delete(Role.user(userId)),
+        ]
+      );
   },
 
   listDocuments: (collectionId) => {
@@ -63,13 +69,15 @@ let api = {
   },
 
   deleteDocument: (collectionId, documentId) => {
-    return api.provider().database.deleteDocument(Server.database, collectionId, documentId);
+    return api
+      .provider()
+      .database.deleteDocument(Server.database, collectionId, documentId);
   },
 
   uploadFile: (file) => {
     return api.provider().storage.createFile(
         Server.storage,
-        (new Date()).toString(),
+        Math.floor(Math.random() * 10000000).toString(),
         file
     );
   }
