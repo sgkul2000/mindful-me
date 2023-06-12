@@ -1,17 +1,13 @@
-import {
-  Client as Appwrite,
-  Databases,
-  Account,
-  Permission,
-  Role,
-} from "appwrite";
+import { Client as Appwrite, Databases, Account, Permission, Role, Storage } from 'appwrite';
 
 const Server = {
-  endpoint: import.meta.env.VITE_APP_ENDPOINT,
-  project: import.meta.env.VITE_APP_PROJECT,
-  collectionID: import.meta.env.VITE_APP_COLLECTION_ID,
-  database: import.meta.env.VITE_APP_DATABASE_ID.toString(),
-};
+    endpoint : import.meta.env.VITE_APP_ENDPOINT,
+    project: import.meta.env.VITE_APP_PROJECT,
+    collectionID : import.meta.env.VITE_APP_COLLECTION_ID,
+    database: import.meta.env.VITE_APP_DATABASE_ID.toString(),
+    storage: import.meta.env.VITE_APP_STORAGE_BUCKET,
+}
+
 
 let api = {
   sdk: null,
@@ -24,8 +20,9 @@ let api = {
     appwrite.setEndpoint(Server.endpoint).setProject(Server.project);
     const account = new Account(appwrite);
     const database = new Databases(appwrite, Server.database);
+    const storage = new Storage(appwrite);
 
-    api.sdk = { database, account };
+    api.sdk = { database, account, storage };
     return api.sdk;
   },
 
@@ -76,6 +73,14 @@ let api = {
       .provider()
       .database.deleteDocument(Server.database, collectionId, documentId);
   },
+
+  uploadFile: (file) => {
+    return api.provider().storage.createFile(
+        Server.storage,
+        Math.floor(Math.random() * 10000000).toString(),
+        file
+    );
+  }
 };
 
 export default api;
