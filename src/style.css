@@ -22,7 +22,7 @@
 }
 
 .brand-shadow {
-  text-shadow: -1px -1px 0 #F2BED1, 1px -1px 0 #F2BED1, -1px 1px 0 #F2BED1, 1px 1px 0 #F2BED1;
+  text-shadow: -2px -2px 0 #F2BED1, 2px -2px 0 #F2BED1, -2px 2px 0 #F2BED1, 2px 2px 0 #F2BED1;
 }
 
 .title-font {
@@ -82,7 +82,7 @@ button {}
 
 @layer components {
   .btn-border {
-    @apply  border border-charcoal rounded-lg px-2.5 py-1 bg-white;
+    @apply  border border-charcoal rounded-lg px-2.5 py-1 bg-white cursor-pointer;
   }
   .option {
     @apply border border-charcoal rounded-2xl p-3 w-1/3;

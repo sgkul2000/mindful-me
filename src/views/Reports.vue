@@ -46,19 +46,8 @@
 <script>
 import api from "../appwrite"
 export default {
-  name: "home",
+  name: "reports",
   methods: {
-    logout() {
-      api.deleteCurrentSession()
-      this.$store.commit("SET_USER", null);
-      this.$notify({
-        title: "Logged out",
-        text: "You will be redirected to the login page.",
-      });
-      setTimeout(() => {
-        this.$router.push({ name: "login" });
-      }, 1000)
-    }
   }
 
 }
