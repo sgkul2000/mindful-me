@@ -21,19 +21,28 @@
         </div>
       </div>
       <div class="options flex py-3 w-full">
-        <div class="option mx-3 bg-pastel_red/50">
+        <div class="option mx-3 bg-pastel_red/30">
+        <div class="image pt-3 pb-5">
+          <img src="../assets/rainbow-woman.png" width="300px" height="400px" alt="" class="mx-auto pl-5">
+        </div>
           <div class="btn-border">
             Connect
           </div>
         </div>
-        <div class="option bg-pastel_yellow/50">
+        <div class="option bg-pastel_yellow/30">
+        <div class="image pt-3 pb-5">
+          <img src="../assets/woman-reading.png" width="300px" height="400px" alt="" class="mx-auto px-5">
+        </div>
           <div class="btn-border">
             Track
           </div><div class="btn-border">
             View
           </div>
         </div>
-        <div class="option mx-3 bg-pastel_blue/50">
+        <div class="option mx-3 bg-pastel_blue/30">
+        <div class="image pt-3 pb-5">
+          <img src="../assets/reading.png" width="300px" height="400px" alt="" class="mx-auto pl-6 pt-2">
+        </div>
           <div class="btn-border">
             Read
           </div>
