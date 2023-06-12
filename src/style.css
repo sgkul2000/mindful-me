@@ -3,15 +3,17 @@
 @tailwind utilities;
 
 :root {
-  font-family: 'Playfair', serif;
+  /* font-family: 'Playfair', serif; */
+  font-family: 'Handlee', cursive;
+  font-size: 130%;
+
   line-height: 1.5;
-  font-weight: 700;
+  font-weight: 900;
 
   color-scheme: light dark;
   color: theme(colors.primary);
-  text-shadow: -1px -1px 0 #F2BED1, 1px -1px 0 #F2BED1, -1px 1px 0 #F2BED1, 1px 1px 0 #F2BED1;
   background-color: #F9F5F6;
-
+  
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -19,11 +21,35 @@
   -webkit-text-size-adjust: 100%;
 }
 
+.brand-shadow {
+  text-shadow: -2px -2px 0 #F2BED1, 2px -2px 0 #F2BED1, -2px 2px 0 #F2BED1, 2px 2px 0 #F2BED1;
+}
+
+.title-font {
+  font-family: 'Playfair', serif;
+}
+
 .content-wrapper {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  /* background-image: url("./assets/background.svg"); */
+  /* background-position: center; */
+}
+
+.content-background {
+  content: "";
+  position: absolute;
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;  
+  opacity: .4; 
+  z-index: -1;
+  background-image: url("./assets/background.svg");
+  background-position: center;
 }
 
 .outline-secondary{
@@ -34,7 +60,31 @@ input {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 400;
   letter-spacing: 1px;
-  color: theme(colors.charcoal);
+  color: theme("colors.charcoal");
 }
 
 button {}
+
+.brand {
+  font-family: 'Bagel Fat One', cursive;
+  /* font-family: 'Moirai One', cursive;
+  font-family: 'Playfair', serif; */
+}
+
+.home-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column; 
+
+  border: 1px solid theme("colors.charcoal");
+}
+
+@layer components {
+  .btn-border {
+    @apply  border border-charcoal rounded-lg px-2.5 py-1 bg-white cursor-pointer;
+  }
+  .option {
+    @apply border border-charcoal rounded-2xl p-3 w-1/3;
+  }
+}

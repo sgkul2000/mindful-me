@@ -1,7 +1,7 @@
 <template>
 <div id="login" class="content-wrapper">
   <div class="flex items-center justify-center flex-col">
-    <h1 class="outline-secondary outline-2 text-9xl mb-10">Register</h1>
+    <h1 class="outline-secondary outline-2 text-7xl mb-10 brand-shadow title-font">Register</h1>
     <input v-model="email" type="text" id="email" placeholder="Enter your email" class="appearance-none bg-white outline-none mb-3 rounded px-5 py-1" >
     <input v-model="name" type="text" id="name" placeholder="Enter your full name" class="appearance-none bg-white outline-none mb-3 rounded px-5 py-1" >
     <input v-model="password" type="password" id="password" placeholder="Enter the password" class="appearance-none bg-white outline-none mb-3 rounded px-5 py-1" >
@@ -25,7 +25,6 @@ export default {
   },
   methods: {
     createAccount() {
-      console.log("creating account")
       api.createAccount(this.email, this.password, this.name).then((res) => {
         console.log(res)
         this.$store.commit("SET_USER", res);
