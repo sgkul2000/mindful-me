@@ -1,11 +1,17 @@
-import { Client as Appwrite, Databases, Account, Permission, Role } from 'appwrite';
+import {
+  Client as Appwrite,
+  Databases,
+  Account,
+  Permission,
+  Role,
+} from "appwrite";
 
 const Server = {
-    endpoint : import.meta.env.VITE_APP_ENDPOINT,
-    project: import.meta.env.VITE_APP_PROJECT,
-    collectionID : import.meta.env.VITE_APP_COLLECTION_ID,
-    database: import.meta.env.VITE_APP_DATABASE_ID.toString(),
-}
+  endpoint: import.meta.env.VITE_APP_ENDPOINT,
+  project: import.meta.env.VITE_APP_PROJECT,
+  collectionID: import.meta.env.VITE_APP_COLLECTION_ID,
+  database: import.meta.env.VITE_APP_DATABASE_ID.toString(),
+};
 
 let api = {
   sdk: null,
@@ -23,8 +29,8 @@ let api = {
     return api.sdk;
   },
 
-  createAccount: (email, password, name) => {   
-    return api.provider().account.create('unique()', email, password, name);
+  createAccount: (email, password, name) => {
+    return api.provider().account.create("unique()", email, password, name);
   },
 
   getAccount: () => {
@@ -36,17 +42,23 @@ let api = {
   },
 
   deleteCurrentSession: () => {
-    return api.provider().account.deleteSession('current');
+    return api.provider().account.deleteSession("current");
   },
 
   createDocument: (collectionId, data, userId) => {
     return api
       .provider()
-      .database.createDocument(Server.database, collectionId, 'unique()', data, [
-        Permission.read(Role.user(userId)),
-        Permission.update(Role.user(userId)),
-        Permission.delete(Role.user(userId))
-      ]);
+      .database.createDocument(
+        Server.database,
+        collectionId,
+        "unique()",
+        data,
+        [
+          Permission.read(Role.user(userId)),
+          Permission.update(Role.user(userId)),
+          Permission.delete(Role.user(userId)),
+        ]
+      );
   },
 
   listDocuments: (collectionId) => {
@@ -60,7 +72,9 @@ let api = {
   },
 
   deleteDocument: (collectionId, documentId) => {
-    return api.provider().database.deleteDocument(Server.database, collectionId, documentId);
+    return api
+      .provider()
+      .database.deleteDocument(Server.database, collectionId, documentId);
   },
 };
 
