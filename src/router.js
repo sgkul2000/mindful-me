@@ -16,6 +16,11 @@ const routes = [
     path: "/register",
     component: () => import("./views/Register.vue"),
   },
+  {
+    name: "report-week",
+    path: "/report/week",
+    component: () => import("./views/WeekReport.vue"),
+  },
 ];
 
 const router = createRouter({
