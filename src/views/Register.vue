@@ -26,15 +26,22 @@ export default {
   methods: {
     createAccount() {
       api.createAccount(this.email, this.password, this.name).then((res) => {
-        console.log(res)
         this.$store.commit("SET_USER", res);
-        this.$notify({
-          title: "Account created",
-          text: "You will be redirected to the login page.",
-        });
-        setTimeout(() => {
-          this.$router.push({ name: "login" });
-        }, 2000)
+        console.log(res)
+        api.createDocument('64873d304947190ba124', {
+          email: this.email,
+          name: this.name,
+          moods: [],
+          journal: ""
+        }, res['userId']).then((data) => {
+          this.$notify({
+            title: "Account created",
+            text: "You will be redirected to the login page.",
+          });
+          setTimeout(() => {
+            this.$router.push({ name: "login" });
+          }, 1000)
+        })
       }).catch((err) => {
         console.log(err)
       })

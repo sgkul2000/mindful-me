@@ -1,9 +1,5 @@
 <script>
-import api from "./appwrite"
 export default {
-  mounted() {
-    api.deleteCurrentSession()
-  }
 
 }
 </script>

@@ -3,6 +3,7 @@ import {defineComponent} from 'vue'
 import {useEditor, EditorContent} from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import {Placeholder} from "@tiptap/extension-placeholder";
+import appwrite from "../appwrite.js";
 
 
 export default defineComponent({
@@ -12,24 +13,66 @@ export default defineComponent({
     EditorContent,
   },
 
+  data() {
+    return {
+      lastPush: null,
+    }
+  },
+
   setup() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const content = '<p>Start a new story 🎉</p>';
+    let lastPush = null;
+    console.log(user)
+    const debounce = (params) => {
+      if(lastPush === null || Date.now() - lastPush > 60000) {
+        const data = params.editor.getJSON()
+        const user = JSON.parse(localStorage.getItem('user'));
+        appwrite.updateDocument('64873d304947190ba124', user['userId'], {
+          journal: JSON.stringify(data)
+        })
+      }
+    }
     const editor = useEditor({
-      content: '<p>I’m running Tiptap with Vue.js. 🎉</p>',
+      content: content,
       extensions: [
         StarterKit,
         Placeholder.configure({
           placeholder: "A safe place to jot down feeling, notes, meme pages we don't judge.....",
         }),
       ],
+      onUpdate: debounce
     })
-
-    return { editor }
+    return { editor, lastPush, user }
   },
+
+  mounted() {
+
+    appwrite.getDocument('64873d304947190ba124', this.user['userId']).then((data) => {
+      if(data["journal"] !== "") {
+        this.editor.commands.setContent(JSON.parse(data['journal']))
+      }
+    })
+  },
+
+
+  methods: {
+    debounce(params) {
+      if(this.lastPush === null || Date.now() - this.lastPush > 60000) {
+        const data = params.editor.getJSON()
+        const user = JSON.parse(localStorage.getItem('user'));
+        appwrite.updateDocument('64873d304947190ba124', user['userId'], {
+          journal: JSON.stringify(data)
+        })
+      }
+    }
+  }
+
 })
 </script>
 
 <template>
-  <editor-content :editor="editor"/>
+  <editor-content :editor="editor" @update="debounce"/>
   <div v-if="editor" class="fixed top-1.5 left-1/2 flex justify-center items-center bg-blue-300 m-5 pl-8 pr-8 rounded-3xl toolbar ">
     <button @click="editor.chain().focus().toggleBold().run()" :disabled="!editor.can().chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
       <img width="24" height="24" src="https://img.icons8.com/hatch/64/bold.png" alt="bold"/>
