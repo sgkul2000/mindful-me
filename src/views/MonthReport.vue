@@ -4,21 +4,20 @@
     <div class="flex items-center justify-start flex-col min-h-screen">
       <header class="text-charcoal w-full text-3xl p-6">
         <div class="cursor-pointer">
-          <span class="header-route header-route-active text-">
-            Week
-          </span>
-          | 
-          <span @click="$router.push({name: 'report-month'})" class="header-route text-xl text-slate-600">
+          <span class="header-route text-xl text-slate-600">
             Month
           </span>
-        </div>
-        <div class="dates text-lg">
-          {{getDates()}}
+          | 
+          <span @click="$router.push({name: 'report-week'})" class="header-route header-route-active">
+            Week
+          </span>
         </div>
       </header>
 
-      <div class="w-full text-charcoal">
-        <Carosuel :slides="slides" @update="onUpdate" />
+      <div class="w-3/12 text-charcoal relative slide-neutral slide">
+          <div class=" w-full h-32 border-amber-400 text-black flex justify-center flex-col px-3">
+            <h2 class="text-2xl bubbly-font text-white">Stats</h2>
+          </div>
       </div>
 
       <div class="row w-11/12 mt-4">
@@ -273,4 +272,21 @@ export default {
 </script>
 <style scoped>
 
+.slide, .slide::before {
+  font-family: "Gaegu", cursive;
+
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.slide::before {
+  content: "";
+  position: absolute;
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;  
+  z-index: -1;
+}
 </style>

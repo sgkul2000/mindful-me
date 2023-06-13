@@ -1,12 +1,15 @@
 <template>
-  <Carousel :itemsToShow="6.35" :wrapAround="true" :transition="500">
+  <Carousel :itemsToShow="6.35" :wrapAround="true" :transition="500" @slide-start="updateIndex">
     <Slide v-for="(slide, index) in slides" class="rounded-3xl" :class="'slide-' + getMaxEmotion(slide)" :key="index">
-      <div class="no_hover mt-auto w-full absolute bottom-0 left-0 pb-2 font-bold text-white shadow-lg">
-        24 July
+      <div class="no_hover mt-auto w-full absolute bottom-0 left-0 pb-1 font-bold text-white shadow-lg">
+        {{slide.timestamp}}
       </div>
-      <div class="on_hover w-full h-64 border-amber-400 text-black flex justify-center flex-col px-2">
+      <div class="on_hover w-full h-48 border-amber-400 text-black flex justify-center flex-col px-3">
         <h2 class="text-2xl bubbly-font text-white">Stats</h2>
-        <ProgressComponent class="py-1" v-for="objKey in Object.keys(slide)" :key="objKey" :emotion="objKey" :percent="slide[objKey]" />
+        <div class="progress" v-for="objKey in Object.keys(processSlide(slide))" :key="objKey">
+          <label for="" class="text-white">{{ objKey }}</label>
+          <ProgressComponent class="py-1" classes="h-2" :percent="slide[objKey]" />
+        </div>
       </div>
     </Slide>
     <template #addons>
@@ -37,6 +40,17 @@ export default defineComponent({
     ProgressComponent
   },
   methods: {
+    updateIndex(val) {
+      this.$emit("update", val.slidingToIndex)
+    },
+    processSlide(slide) {
+      return {
+        happy: slide.happy,
+        angry: slide.angry,
+        anxious: slide.anxious,
+        neutral: slide.neutral,
+      }
+    },
     getMaxEmotion(input) {
       let emotion = "happy";
       Object.keys(input).reduce((prev, curr) => {
@@ -85,6 +99,10 @@ export default defineComponent({
   z-index: -1;
 }
 
+.carousel__slide > .no_hover{
+  transition: all .5s ease;
+}
+
 .carousel__slide > .on_hover{
   transition: all .5s ease;
 }
@@ -94,6 +112,10 @@ export default defineComponent({
 }
 .carousel__slide:hover::before {
   opacity: 0;
+}
+.carousel__slide:hover > .no_hover {
+  opacity: 0;
+
 }
 .carousel__slide:hover > .on_hover {
   opacity: 1;

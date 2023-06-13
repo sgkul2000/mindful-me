@@ -30,6 +30,12 @@ const routes = [
     component: () => import("./views/WeekReport.vue"),
     meta: { requiresAuth: true },
   },
+  {
+    name: "report-month",
+    path: "/report/month",
+    component: () => import("./views/MonthReport.vue"),
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = createRouter({
