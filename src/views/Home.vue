@@ -1,7 +1,7 @@
 <template>
   <div class="content-wrapper flex-col">
     <div class="content-background"></div>
-    <h1 class="brand text-7xl brand-shadow mb-6" >Mindful Me</h1>
+    <h1 class="brand text-7xl brand-shadow mb-6">Mindful Me</h1>
 
     <div class="home-content w-10/12 rounded-2xl text-charcoal bg-white">
       <div class="nav flex flex-row justify-between w-full border-b px-6 border-b-charcoal py-3">
@@ -22,40 +22,63 @@
       </div>
       <div class="options flex py-3 w-full">
         <div class="option mx-3 bg-pastel_red/30">
-        <div class="image pt-3 pb-5">
-          <img src="../assets/rainbow-woman.png" width="300px" height="400px" alt="" class="mx-auto pl-5">
-        </div>
-          <div class="btn-border">
-            Connect
+          <div class="image pt-3 pb-5">
+            <img src="../assets/rainbow-woman.png" alt="" class="mx-auto pl-5 w-100 h-100">
+          </div>
+          <div class="flex justify-evenly">
+            <div class="btn-border">
+              Connect
+            </div>
           </div>
         </div>
         <div class="option bg-pastel_yellow/30">
-        <div class="image pt-3 pb-5">
-          <img src="../assets/woman-reading.png" width="300px" height="400px" alt="" class="mx-auto px-5">
-        </div>
-          <div class="btn-border">
-            Track
-          </div><div class="btn-border">
-            View
+          <div class="image pt-3 pb-5">
+            <img src="../assets/woman-reading.png" alt="" class="mx-auto px-5 w-100 h-100">
+          </div>
+          <div class="flex justify-evenly">
+            <div @click="trackFlow" class="btn-border">
+              Track
+            </div>
+            <div class="btn-border">
+              View
+            </div>
           </div>
         </div>
         <div class="option mx-3 bg-pastel_blue/30">
-        <div class="image pt-3 pb-5">
-          <img src="../assets/reading.png" width="300px" height="400px" alt="" class="mx-auto pl-6 pt-2">
-        </div>
-          <div class="btn-border">
-            Read
+          <div class="image pt-3 pb-5">
+            <img src="../assets/reading.png" alt="" class="mx-auto pl-6 pt-2 w-100 h-100">
+          </div>
+          <div class="flex justify-evenly">
+            <div class="btn-border">
+              Read
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <Teleport to="body">
+    <!-- use the modal component, pass in the prop -->
+    <modal :show="showModal" @close="showModal = false">
+      <template #header>
+        <h3>custom header</h3>
+      </template>
+    </modal>
+  </Teleport>
 </template>
 
 <script>
 import api from "../appwrite"
+import Modal from "../components/modal.vue"
+
 export default {
   name: "home",
+  components: {Modal},
+  data() {
+    return {
+      showModal: false
+    }
+  },
   methods: {
     logout() {
       api.deleteCurrentSession()
@@ -65,8 +88,11 @@ export default {
         text: "You will be redirected to the login page.",
       });
       setTimeout(() => {
-        this.$router.push({ name: "login" });
+        this.$router.push({name: "login"});
       }, 1000)
+    },
+    trackFlow() {
+      this.showModal = true;
     }
   }
 
