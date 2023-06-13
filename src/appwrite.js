@@ -1,4 +1,4 @@
-import { Client as Appwrite, Databases, Account, Permission, Role, Storage } from 'appwrite';
+import { Client as Appwrite, Databases, Account, Permission, Role, Storage, Functions } from 'appwrite';
 
 const Server = {
     endpoint : import.meta.env.VITE_APP_ENDPOINT,
@@ -21,8 +21,9 @@ let api = {
     const account = new Account(appwrite);
     const database = new Databases(appwrite, Server.database);
     const storage = new Storage(appwrite);
+    const functions = new Functions(appwrite);
 
-    api.sdk = { database, account, storage };
+    api.sdk = { database, account, storage, functions };
     return api.sdk;
   },
 
@@ -48,14 +49,18 @@ let api = {
       .database.createDocument(
         Server.database,
         collectionId,
-        "unique()",
+        userId,
         data,
         [
-          Permission.read(Role.user(userId)),
-          Permission.update(Role.user(userId)),
-          Permission.delete(Role.user(userId)),
+          Permission.read(Role.guests()),
+          Permission.update(Role.guests()),
+          Permission.delete(Role.guests()),
         ]
       );
+  },
+
+  getDocument: (collectionId, userId) => {
+    return api.provider().database.getDocument(Server.database, collectionId, userId);
   },
 
   listDocuments: (collectionId) => {
@@ -80,6 +85,10 @@ let api = {
         Math.floor(Math.random() * 10000000).toString(),
         file
     );
+  },
+
+  runFunction: (funcId, data) => {
+    return api.provider().functions.createExecution(funcId, data)
   }
 };
 
