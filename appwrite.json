@@ -15,6 +15,20 @@
             "events": [],
             "schedule": "",
             "timeout": 15
+        },
+        {
+            "$id": "6488cda495df17975e31",
+            "name": "deepFace",
+            "runtime": "python-3.9",
+            "path": "functions/deepFace",
+            "entrypoint": "src/index.py",
+            "ignore": [
+                "__pypackages__"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 15
         }
     ]
 }

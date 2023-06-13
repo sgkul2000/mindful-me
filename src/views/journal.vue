@@ -72,7 +72,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <editor-content :editor="editor" @update="debounce"/>
+  <editor-content class="prose" :editor="editor" @update="debounce"/>
   <div v-if="editor" class="fixed top-1.5 left-1/2 flex justify-center items-center bg-blue-300 m-5 pl-8 pr-8 rounded-3xl toolbar ">
     <button @click="editor.chain().focus().toggleBold().run()" :disabled="!editor.can().chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
       <img width="24" height="24" src="https://img.icons8.com/hatch/64/bold.png" alt="bold"/>
