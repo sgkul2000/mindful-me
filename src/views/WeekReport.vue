@@ -1,3 +1,29 @@
+
+<template>
+  <div>
+    <div class="flex items-center justify-start flex-col min-h-screen">
+      <header class="text-charcoal w-full text-3xl p-6">
+        <div>
+          <span class="header-route header-route-active text-">
+            Week
+          </span>
+          | 
+          <span class="header-route text-xl text-slate-600">
+            Month
+          </span>
+        </div>
+        <div class="dates text-lg">
+          {{getDates}}
+        </div>
+      </header>
+
+      <div class="w-full text-charcoal">
+        <Carosuel :slides="slides" />
+      </div>
+    </div>
+  </div>
+</template>
+
 <script>
 import {defineComponent} from 'vue'
 import Carosuel from "../components/carosuel.vue";
@@ -116,19 +142,6 @@ export default defineComponent({
   }
 })
 </script>
-
-<template>
-  <div>
-    <header>
-      <h1>Week / </h1><h6>Month</h6>
-      {{ getDates }}
-    </header>
-    <Carosuel :slides="slides" />
-
-    <input type="file" ref="fileUpload" name="dumdum" id="" @change="analyse">
-  </div>
-</template>
-
 <style scoped>
 
 </style>

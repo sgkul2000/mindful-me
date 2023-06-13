@@ -12,6 +12,11 @@ export default {
         pastel_red: "#ff6961",
         pastel_yellow: "#FDFD96",
         pastel_blue: "#AEC6CF",
+
+        slide_yellow: "#F8E088", // neutral
+        slide_pink: "#F2B2C4", // happy
+        slide_blue: "#9EADD9", // anxious
+        slide_orange: "#F09357", // angry
       },
     },
   },

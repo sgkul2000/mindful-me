@@ -4,14 +4,15 @@
 
 :root {
   /* font-family: 'Playfair', serif; */
-  font-family: 'Handlee', cursive;
-  font-size: 130%;
+  font-family: 'Gaegu', cursive;
+  font-size: 140%;
 
-  line-height: 1.5;
-  font-weight: 900;
+  line-height: 1.2;
+  /* font-weight: 900; */
+  font-weight: 700;
 
   color-scheme: light dark;
-  color: theme(colors.primary);
+  color: theme(colors.charcoal);
   background-color: #F9F5F6;
   
   font-synthesis: none;
@@ -27,6 +28,7 @@
 
 .title-font {
   font-family: 'Playfair', serif;
+  color: theme(colors.primary);
 }
 
 .content-wrapper {
@@ -67,8 +69,17 @@ button {}
 
 .brand {
   font-family: 'Bagel Fat One', cursive;
+  color: theme(colors.primary);
   /* font-family: 'Moirai One', cursive;
   font-family: 'Playfair', serif; */
+}
+
+.bubbly-font {
+  font-family: 'Bagel Fat One', cursive;
+}
+
+.font-playfair {
+  font-family: 'Playfair', serif;
 }
 
 .home-content {
@@ -87,4 +98,36 @@ button {}
   .option {
     @apply border border-charcoal rounded-2xl p-3 w-1/3;
   }
+}
+
+.slide-happy {
+  background-color: theme(colors.slide_pink);
+}
+
+.slide-happy::before {
+  background-image: url("./assets/happy.svg");
+}
+
+.slide-angry {
+  background-color: theme(colors.slide_orange);
+}
+
+.slide-angry::before {
+  background-image: url("./assets/angry.svg");
+}
+
+.slide-neutral {
+  background-color: theme(colors.slide_yellow);
+}
+
+.slide-neutral::before {
+  background-image: url("./assets/neutral.svg");
+}
+
+.slide-anxious {
+  background-color: theme(colors.slide_blue);
+}
+
+.slide-anxious::before {
+  background-image: url("./assets/anxious.svg");
 }

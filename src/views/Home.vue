@@ -1,6 +1,6 @@
 <template>
   <div class="content-wrapper flex-col">
-<div class="content-background"></div>
+    <div class="content-background"></div>
     <h1 class="brand text-7xl brand-shadow mb-6" >Mindful Me</h1>
 
     <div class="home-content w-10/12 rounded-2xl text-charcoal bg-white">

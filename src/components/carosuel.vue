@@ -1,10 +1,12 @@
 <template>
   <Carousel :itemsToShow="6.35" :wrapAround="true" :transition="500">
-    <Slide v-for="(slide, index) in slides" class="rounded-2xl bg-amber-500" :key="index">
-      <div class="indicator w-full h-64 border-amber-400">{{ getMaxEmotion(slide) }}</div>
-      <div class="on_hover w-full h-64 border-amber-400 text-black">
-        <h2>Your stats for the dayy</h2>
-        <Progress />
+    <Slide v-for="(slide, index) in slides" class="rounded-3xl" :class="'slide-' + getMaxEmotion(slide)" :key="index">
+      <div class="no_hover mt-auto w-full absolute bottom-0 left-0 pb-2 font-bold text-white shadow-lg">
+        24 July
+      </div>
+      <div class="on_hover w-full h-64 border-amber-400 text-black flex justify-center flex-col px-2">
+        <h2 class="text-2xl bubbly-font text-white">Stats</h2>
+        <ProgressComponent class="py-1" v-for="objKey in Object.keys(slide)" :key="objKey" :emotion="objKey" :percent="slide[objKey]" />
       </div>
     </Slide>
     <template #addons>
@@ -16,7 +18,7 @@
 <script>
 import { defineComponent } from 'vue'
 import { Carousel, Navigation, Slide } from 'vue3-carousel'
-import Progress from "./progress.vue";
+import ProgressComponent from "./progress.vue";
 
 import 'vue3-carousel/dist/carousel.css'
 
@@ -32,7 +34,7 @@ export default defineComponent({
     Carousel,
     Slide,
     Navigation,
-    Progress
+    ProgressComponent
   },
   methods: {
     getMaxEmotion(input) {
@@ -58,14 +60,43 @@ export default defineComponent({
 .carousel__slide:not(.carousel__slide--active) {
   transform: scale(.85);
 }
-.carousel__slide:hover > .indicator {
-  display: none;
-}
 .on_hover {
-  display: none;
+  opacity: 0;
+}
+
+.carousel__slide, .carousel__slide::before {
+  font-family: "Gaegu", cursive;
+
+  overflow: hidden;
+  transition: all .5s ease;
+
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.carousel__slide::before {
+  content: "";
+  position: absolute;
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;  
+  z-index: -1;
+}
+
+.carousel__slide > .on_hover{
+  transition: all .5s ease;
+}
+
+.carousel__slide:hover {
+  transition: all .5s ease;
+}
+.carousel__slide:hover::before {
+  opacity: 0;
 }
 .carousel__slide:hover > .on_hover {
-  display: block;
+  opacity: 1;
 
 }
 </style>
