@@ -13,7 +13,7 @@
   color-scheme: light dark;
   color: theme(colors.primary);
   background-color: #F9F5F6;
-  
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -42,11 +42,11 @@
 .content-background {
   content: "";
   position: absolute;
-  top: 0; 
+  top: 0;
   left: 0;
-  width: 100%; 
-  height: 100%;  
-  opacity: .4; 
+  width: 100%;
+  height: 100%;
+  opacity: .4;
   z-index: -1;
   background-image: url("./assets/background.svg");
   background-position: center;
@@ -75,7 +75,7 @@ button {}
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column; 
+  flex-direction: column;
 
   border: 1px solid theme("colors.charcoal");
 }
