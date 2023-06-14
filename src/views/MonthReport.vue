@@ -4,11 +4,11 @@
     <div class="flex items-center justify-start flex-col min-h-screen">
       <header class="text-charcoal w-full text-3xl p-6">
         <div class="cursor-pointer">
-          <span class="header-route text-xl text-slate-600">
+          <span class="header-route header-route-active">
             Month
           </span>
-          | 
-          <span @click="$router.push({name: 'report-week'})" class="header-route header-route-active">
+          |
+          <span @click="$router.push({name: 'report-week'})" class="header-route text-xl text-slate-600">
             Week
           </span>
         </div>
@@ -99,12 +99,20 @@ import LineChart from "../components/LineChart.vue";
 import Carosuel from "../components/carosuel.vue";
 import api from "../appwrite.js"
 import ProgressComponent from "../components/progress.vue";
+import appwrite from "../appwrite.js";
 export default {
   name: "reports",
   components: {
     Carosuel,
     ProgressComponent,
     LineChart
+  },
+  beforeMount() {
+    const user = JSON.parse(localStorage.getItem('user'))
+    appwrite.getDocument('64873d304947190ba124', user['userId']).then((data) => {
+      const moods = data.moods.map(el => JSON.parse(el))
+      this.slides = moods.slice(-30)
+    })
   },
   methods: {
     processSlide(slide) {
@@ -176,106 +184,7 @@ export default {
   data() {
     return {
       currentIndex: 0,
-      slides: [
-        {
-          "happy": 99,
-          "angry": 53,
-          "neutral": 77,
-          "anxious": 41,
-          "timestamp": "24 July"
-        },
-        {
-          "happy": 42,
-          "angry": 3,
-          "neutral": 5,
-          "anxious": 86,
-          "timestamp": "03 March"
-        },
-        {
-          "happy": 25,
-          "angry": 11,
-          "neutral": 53,
-          "anxious": 3,
-          "timestamp": "12 Dec"
-        },
-        {
-          "happy": 12,
-          "angry": 96,
-          "neutral": 42,
-          "anxious": 96,
-          "timestamp": "30 June"
-        },
-        {
-          "happy": 43,
-          "angry": 64,
-          "neutral": 41,
-          "anxious": 86,
-          "timestamp": "02 August"
-        },
-        {
-          "happy": 27,
-          "angry": 6,
-          "neutral": 76,
-          "anxious": 66,
-          "timestamp": "08 Nov"
-        },
-        {
-          "happy": 55,
-          "angry": 40,
-          "neutral": 16,
-          "anxious": 53,
-          "timestamp": "21 Jan"
-        },
-        {
-          "happy": 22,
-          "angry": 18,
-          "neutral": 68,
-          "anxious": 21,
-          "timestamp": "19 Feb"
-        },
-        {
-          "happy": 77,
-          "angry": 27,
-          "neutral": 32,
-          "anxious": 55,
-          "timestamp": "24 April"
-        },
-        {
-          "happy": 10,
-          "angry": 74,
-          "neutral": 55,
-          "anxious": 1,
-          "timestamp": "25 Dec"
-        },
-        {
-          "happy": 79,
-          "angry": 22,
-          "neutral": 14,
-          "anxious": 46,
-          "timestamp": "15 August"
-        },
-        {
-          "happy": 80,
-          "angry": 12,
-          "neutral": 13,
-          "anxious": 5,
-          "timestamp": "26 Jan"
-        },
-        {
-          "happy": 50,
-          "angry": 65,
-          "neutral": 62,
-          "anxious": 64,
-          "timestamp": "14 Oct"
-        },
-        {
-          "happy": 9,
-          "angry": 81,
-          "neutral": 78,
-          "anxious": 3,
-          "timestamp": "04 Sept"
-        }
-      ]
+      slides: []
     }
   },
 }

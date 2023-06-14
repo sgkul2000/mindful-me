@@ -1,8 +1,8 @@
 <template>
-  <Carousel :itemsToShow="6.35" :wrapAround="true" :transition="500" @slide-start="updateIndex">
+  <Carousel :itemsToShow="slides.length > 7 ? 6.35 : slides.length" :wrapAround="true" :transition="500" @slide-start="updateIndex">
     <Slide v-for="(slide, index) in slides" class="rounded-3xl" :class="'slide-' + getMaxEmotion(slide)" :key="index">
       <div class="no_hover mt-auto w-full absolute bottom-0 left-0 pb-1 font-bold text-white shadow-lg">
-        {{slide.timestamp}}
+        {{formatDate(slide)}}
       </div>
       <div class="on_hover w-full h-48 border-amber-400 text-black flex justify-center flex-col px-3">
         <h2 class="text-2xl bubbly-font text-white">Stats</h2>
@@ -30,7 +30,12 @@ export default defineComponent({
   props: {
     slides: {
       type: Array,
-      required: true
+      required: true,
+    }
+  },
+  data() {
+    return {
+      monthMap: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     }
   },
   components: {
@@ -65,6 +70,10 @@ export default defineComponent({
         }
       }, 0);
       return emotion;
+    },
+    formatDate(slide) {
+      const date = new Date(slide.stamp);
+      return date.getDate() + ' ' + this.monthMap[date.getMonth()];
     }
   }
 })
@@ -92,10 +101,10 @@ export default defineComponent({
 .carousel__slide::before {
   content: "";
   position: absolute;
-  top: 0; 
+  top: 0;
   left: 0;
-  width: 100%; 
-  height: 100%;  
+  width: 100%;
+  height: 100%;
   z-index: -1;
 }
 
