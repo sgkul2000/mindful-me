@@ -7,7 +7,7 @@
           <span class="header-route header-route-active text-">
             Week
           </span>
-          | 
+          |
           <span @click="$router.push({name: 'report-month'})" class="header-route text-xl text-slate-600">
             Month
           </span>
@@ -91,6 +91,7 @@
 import Carosuel from "../components/carosuel.vue";
 import api from "../appwrite.js"
 import ProgressComponent from "../components/progress.vue";
+import appwrite from "../appwrite.js";
 export default {
   name: "reports",
   components: {
@@ -163,6 +164,13 @@ export default {
       }, 0);
       return angry / this.slides.length;
     },
+  },
+  beforeMount() {
+    const user = JSON.parse(localStorage.getItem('user'))
+    appwrite.getDocument('64873d304947190ba124', user['userId']).then((data) => {
+      const moods = data.moods.map(el => JSON.parse(el))
+      this.slides = moods
+    })
   },
   data() {
     return {
