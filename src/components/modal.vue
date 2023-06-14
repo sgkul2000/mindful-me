@@ -47,13 +47,13 @@ export default {
               }
               await appwrite.updateDocument('64873d304947190ba124', user['userId'], {
                 moods: [
-                  ...moods,
+                  ...userData.moods,
                   JSON.stringify({
                     ...this.emotionData,
                     stamp: new Date(),
                   }),
                 ],
-              });
+              }).then(() => this.$router.push('/'));
             })
           stream.getTracks().forEach(function (track) {
             track.stop();
@@ -78,7 +78,7 @@ export default {
               <img src="../assets/camera.png" alt="Trulli">
               <figcaption>Click a picture</figcaption>
             </figure>
-            <figure>
+            <figure @click="$router.push('/questionnaire')">
               <img src="../assets/camera.png" alt="Trulli">
               <figcaption>Answer a few questions</figcaption>
             </figure>
