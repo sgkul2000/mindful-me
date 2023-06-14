@@ -1,30 +1,95 @@
 <script>
+import axios from 'axios';
+import appwrite from "../appwrite.js";
+
 export default {
   props: {
     show: Boolean
-  }
+  },
+  data() {
+    return {
+      mode: "option"
+    }
+  },
+  methods: {
+    async clickPicture() {
+      this.mode = 'camera'
+      let stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: false,
+      });
+      this.$refs.video.srcObject = stream;
+      setTimeout(() => {
+        const canvas = this.$refs.canvas;
+        canvas
+            .getContext("2d")
+            .drawImage(this.$refs.video, 0, 0, canvas.width, canvas.height);
+        let image_data_url = canvas.toDataURL("image/jpeg");
+        console.log(image_data_url)
+        const user = JSON.parse(localStorage.getItem('user'))
+        axios
+            .post("http://127.0.0.1:5000/image", {data_url: image_data_url})
+            .then(async (resp) => {
+              console.log(resp);
+              this.emotionData = {
+                happy: resp.data[0].emotion.happy,
+                angry: resp.data[0].emotion.angry,
+                anxious: resp.data[0].emotion.fear,
+                neutral: resp.data[0].emotion.neutral,
+              };
+              const userData = await appwrite.getDocument('64873d304947190ba124', user['userId']);
+              const moods = userData['moods'].map(el => JSON.parse(el));
+              if(moods.length > 0) {
+                const lastDate = new Date(userData.moods.at(-1).stamp);
+                if (lastDate.getDate() === new Date().getDate()) {
+                  moods.pop();
+                }
+              }
+              await appwrite.updateDocument('64873d304947190ba124', user['userId'], {
+                moods: [
+                  ...userData.moods,
+                  JSON.stringify({
+                    ...this.emotionData,
+                    stamp: new Date(),
+                  }),
+                ],
+              }).then(() => this.$router.push('/'));
+            })
+          stream.getTracks().forEach(function (track) {
+            track.stop();
+          });
+          stream.getVideoTracks().forEach(el => el.enabled = false)
+      }, 2000)
+    }
+  },
 }
 </script>
 
 <template>
   <Transition name="modal">
-    <div v-if="show" class="modal-mask" @click="$emit">
+    <div v-if="show" class="modal-mask">
       <div class="modal-container">
-        <div class="header">
-          <h3>Let's see how was your day ?</h3>
+        <div v-if="mode === 'option'">
+          <div class="header">
+            <h3>Let's see how was your day ?</h3>
+          </div>
+          <div class="body">
+            <figure @click="clickPicture">
+              <img src="../assets/camera.png" alt="Trulli">
+              <figcaption>Click a picture</figcaption>
+            </figure>
+            <figure @click="$router.push('/questionnaire')">
+              <img src="../assets/camera.png" alt="Trulli">
+              <figcaption>Answer a few questions</figcaption>
+            </figure>
+          </div>
+          <div class="footer">
+            <button class="modal-default-button" @click="$emit('close')">Close</button>
+          </div>
         </div>
-        <div class="body">
-          <figure>
-            <img src="../assets/camera.png" alt="Trulli">
-            <figcaption>Click a picture</figcaption>
-          </figure>
-          <figure>
-            <img src="../assets/camera.png" alt="Trulli" >
-            <figcaption>Answer a few questions</figcaption>
-          </figure>
-        </div>
-        <div class="footer">
-          <button class="modal-default-button" @click="$emit('close')">Close</button>
+        <div v-else>
+          <video id="video" autoplay width="320" height="240" ref="video"></video>
+          <canvas style="display: none" ref="canvas"/>
         </div>
       </div>
     </div>

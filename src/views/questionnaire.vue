@@ -2,7 +2,7 @@
 <div id="questionnaire" class="content-wrapper">
   <div class="flex items-center justify-center flex-col">
     <h1 class="outline-secondary outline-2 text-4xl mb-10 brand-shadow title-font">How do you feel today?</h1>
-    
+
     <img src="../assets/think.png" class="h-32 mb-4 pl-4">
 
     <div class="question mb-4">
@@ -40,6 +40,8 @@
 
 <script>
 // import api from "../appwrite"
+import appwrite from "../appwrite.js";
+
 export default {
   name: "questionnaire",
   data() {
@@ -77,35 +79,24 @@ export default {
       if (this.questionIndex !== 2) {
         this.questionIndex++;
       } else {
-      
-      //   const docRef = doc(db, "users", this.$store.state.user.uid);
-      //   const dbResp = await getDoc(docRef);
-      //   const dbData = dbResp.data();
-      //   const lastDate = new Date(
-      //     dbData.moods.at(-1).stamp.seconds * 1000 +
-      //       dbData.moods.at(-1).stamp.nanoseconds / 1000000
-      //   );
-      //   if (lastDate.getDate() === new Date().getDate()) {
-      //     let moods = dbData.moods;
-      //     moods.pop();
-      //     await updateDoc(docRef, {
-      //       moods: [
-      //         ...moods,
-      //         {
-      //           ...this.formInput,
-      //           stamp: new Date(),
-      //         },
-      //       ],
-      //     });
-      //   } else {
-      //     await updateDoc(docRef, {
-      //       moods: arrayUnion({
-      //         ...this.formInput,
-      //         stamp: new Date(),
-      //       }),
-      //     });
-      //   }
-      //   this.$emit("close");
+        const user = JSON.parse(localStorage.getItem('user'))
+        const userData = await appwrite.getDocument('64873d304947190ba124', user['userId']);
+        const moods = userData['moods'].map(el => JSON.parse(el));
+        if(moods.length > 0) {
+          const lastDate = new Date(userData.moods.at(-1).stamp);
+          if (lastDate.getDate() === new Date().getDate()) {
+            moods.pop();
+          }
+        }
+        await appwrite.updateDocument('64873d304947190ba124', user['userId'], {
+          moods: [
+            ...userData.moods,
+            JSON.stringify({
+              ...this.emotionData,
+              stamp: new Date(),
+            }),
+          ],
+        });
       }
     },
   }
@@ -185,5 +176,5 @@ export default {
 	 background: #fff;
 	 color: #F2BED1;
 }
- 
+
 </style>
