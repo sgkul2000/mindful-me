@@ -28,7 +28,7 @@ export default {
         console.log(image_data_url)
         const user = JSON.parse(localStorage.getItem('user'))
         axios
-            .post("http://127.0.0.1:5000/image", {data_url: image_data_url})
+            .post("https://mindful-me.shreeshkulkarni.com/image", {data_url: image_data_url})
             .then(async (resp) => {
               console.log(resp);
               this.emotionData = {
@@ -88,7 +88,7 @@ export default {
           </div>
         </div>
         <div v-else>
-          <video id="video" autoplay width="320" height="240" ref="video"></video>
+          <video id="video" autoplay width="500" height="300" ref="video"></video>
           <canvas style="display: none" ref="canvas"/>
         </div>
       </div>
