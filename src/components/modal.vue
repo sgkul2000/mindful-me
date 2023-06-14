@@ -1,14 +1,19 @@
 <script>
 import axios from 'axios';
 import appwrite from "../appwrite.js";
+import ProgressComponent from "./progress.vue";
 
 export default {
+  components: {ProgressComponent},
   props: {
     show: Boolean
   },
   data() {
     return {
-      mode: "option"
+      mode: "option",
+      emotionData: {},
+      pictureClicked: false,
+      responseReceived: false,
     }
   },
   methods: {
@@ -20,6 +25,7 @@ export default {
       });
       this.$refs.video.srcObject = stream;
       setTimeout(() => {
+        this.pictureClicked = true;
         const canvas = this.$refs.canvas;
         canvas
             .getContext("2d")
@@ -30,7 +36,7 @@ export default {
         axios
             .post("https://mindful-me.shreeshkulkarni.com/image", {data_url: image_data_url})
             .then(async (resp) => {
-              console.log(resp);
+              this.responseReceived = true;
               this.emotionData = {
                 happy: resp.data[0].emotion.happy,
                 angry: resp.data[0].emotion.angry,
@@ -39,7 +45,7 @@ export default {
               };
               const userData = await appwrite.getDocument('64873d304947190ba124', user['userId']);
               const moods = userData['moods'].map(el => JSON.parse(el));
-              if(moods.length > 0) {
+              if (moods.length > 0) {
                 const lastDate = new Date(userData.moods.at(-1).stamp);
                 if (lastDate.getDate() === new Date().getDate()) {
                   moods.pop();
@@ -55,10 +61,10 @@ export default {
                 ],
               }).then(() => this.$router.push('/'));
             })
-          stream.getTracks().forEach(function (track) {
-            track.stop();
-          });
-          stream.getVideoTracks().forEach(el => el.enabled = false)
+        stream.getTracks().forEach(function (track) {
+          track.stop();
+        });
+        stream.getVideoTracks().forEach(el => el.enabled = false)
       }, 2000)
     }
   },
@@ -87,9 +93,27 @@ export default {
             <button class="modal-default-button" @click="$emit('close')">Close</button>
           </div>
         </div>
-        <div v-else>
-          <video id="video" autoplay width="500" height="300" ref="video"></video>
-          <canvas style="display: none" ref="canvas"/>
+        <div v-else class="flex justify-center items-center flex-col w-full h-full">
+          <div v-if="pictureClicked && !responseReceived">
+            <h1>Loading</h1>
+          </div>
+          <div v-else-if="responseReceived && pictureClicked" class="w-full flex flex-col items-center justify-center">
+            <div class="progress w-full"
+                 v-for="objKey in Object.keys(emotionData)" :key="objKey">
+              <label>{{ objKey }}</label>
+              <ProgressComponent class="py-1" classes="h-2" :percent="emotionData[objKey]"/>
+            </div>
+            <div class="message w-100 rounded-2xl">
+              Tis data is not 100% accurate!
+            </div>
+          </div>
+          <div v-else>
+            <video id="video" autoplay width="500" height="300" ref="video"></video>
+            <canvas style="display: none" ref="canvas"/>
+          </div>
+          <div class="footer">
+            <button class="modal-default-button" @click="$emit('close')">Close</button>
+          </div>
         </div>
       </div>
     </div>
@@ -107,6 +131,16 @@ export default {
   background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   transition: opacity 0.3s ease;
+}
+
+.message {
+  background-color: #7c8798;
+  padding: 10px;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .modal-container {

@@ -71,7 +71,7 @@ button {}
 
 .brand {
   font-family: 'Bagel Fat One', cursive;
-  color: theme(colors.charcoal);
+  color: #ffd3d0;
   /* font-family: 'Moirai One', cursive;
   font-family: 'Playfair', serif; */
 }

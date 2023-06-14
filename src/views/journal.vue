@@ -73,7 +73,7 @@ export default defineComponent({
 
 <template>
   <editor-content class="prose" :editor="editor" @update="debounce"/>
-  <div v-if="editor" class="fixed top-1.5 left-1/2 flex justify-center items-center bg-blue-300 m-5 pl-8 pr-8 rounded-3xl toolbar ">
+  <div v-if="editor" class="fixed top-1.5 left-1/2 flex justify-center items-center btn-border m-5 pl-8 pr-8 rounded-3xl toolbar opacity-25 hover:opacity-100 transition-all ease-in">
     <button @click="editor.chain().focus().toggleBold().run()" :disabled="!editor.can().chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
       <img width="24" height="24" src="https://img.icons8.com/hatch/64/bold.png" alt="bold"/>
     </button>
@@ -120,6 +120,9 @@ export default defineComponent({
 </template>
 
 <style>
+.prose {
+  max-width: 100vw !important;
+}
 .ProseMirror {
   padding: 3em;
   margin-top: 3em;
@@ -150,7 +153,14 @@ export default defineComponent({
 }
 
 button {
-  margin: 5px;
+  margin: 2px;
+  padding: 5px;
+  border-radius: 5px;
+  transition: all 100ms linear;
+}
+
+button:hover {
+  background-color: #ededee;
 }
 
 .toolbar {
