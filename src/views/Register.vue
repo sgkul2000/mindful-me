@@ -28,7 +28,7 @@ export default {
       api.createAccount(this.email, this.password, this.name).then((res) => {
         this.$store.commit("SET_USER", res);
         console.log(res)
-        api.createDocument('64873d304947190ba124', {
+        api.createDocument(import.meta.env.VITE_APP_COLLECTION_ID, {
           email: this.email,
           name: this.name,
           moods: [],

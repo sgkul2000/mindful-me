@@ -80,7 +80,7 @@ export default {
         this.questionIndex++;
       } else {
         const user = JSON.parse(localStorage.getItem('user'))
-        const userData = await appwrite.getDocument('64873d304947190ba124', user['userId']);
+        const userData = await appwrite.getDocument(import.meta.env.VITE_APP_COLLECTION_ID, user['userId']);
         const moods = userData['moods'].map(el => JSON.parse(el));
         if(moods.length > 0) {
           const lastDate = new Date(userData.moods.at(-1).stamp);
@@ -88,7 +88,7 @@ export default {
             moods.pop();
           }
         }
-        await appwrite.updateDocument('64873d304947190ba124', user['userId'], {
+        await appwrite.updateDocument(import.meta.env.VITE_APP_COLLECTION_ID, user['userId'], {
           moods: [
             ...userData.moods,
             JSON.stringify({

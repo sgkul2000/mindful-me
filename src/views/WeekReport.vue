@@ -167,7 +167,7 @@ export default {
   },
   beforeMount() {
     const user = JSON.parse(localStorage.getItem('user'))
-    appwrite.getDocument('64873d304947190ba124', user['userId']).then((data) => {
+    appwrite.getDocument(import.meta.env.VITE_APP_COLLECTION_ID, user['userId']).then((data) => {
       const moods = data.moods.map(el => JSON.parse(el))
       this.slides = moods
     })
