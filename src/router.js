@@ -42,6 +42,12 @@ const routes = [
     component: () => import("./views/Questionnaire.vue"),
     meta: { requiresAuth: true },
   },
+  {
+    name: "connect",
+    path: "/connect",
+    component: () => import("./views/Connect.vue"),
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = createRouter({

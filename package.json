@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroicons/vue": "^2.0.18",
     "@kyvg/vue3-notification": "^2.9.1",
     "@tiptap/extension-placeholder": "^2.0.3",
     "@tiptap/pm": "^2.0.3",
@@ -22,6 +23,7 @@
     "vue-rough-notation": "^1.0.4",
     "vue-router": "^4.2.2",
     "vue3-carousel": "^0.3.1",
+    "vue3-google-map": "^0.15.0",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

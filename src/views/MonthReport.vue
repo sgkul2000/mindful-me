@@ -2,15 +2,27 @@
   <div>
     <div class="flex items-center justify-start flex-col min-h-screen">
       <header class="text-charcoal w-full text-3xl p-6">
-        <div class="cursor-pointer">
-          <span class="header-route header-route-active"> Month </span>
-          |
-          <span
-            @click="$router.push({ name: 'report-week' })"
-            class="header-route text-xl text-slate-600"
-          >
-            Week
-          </span>
+        <div class="flex justify-between">
+          <div class="cursor-pointer">
+            <span class="header-route header-route-active"> Month </span>
+            |
+            <span
+              @click="$router.push({ name: 'report-week' })"
+              class="header-route text-xl text-slate-600"
+            >
+              Week
+            </span>
+          </div>
+          <RoughNotation class="mr-4" :is-show="notationread" type="circle">
+            <div
+              class="cursor-pointer"
+              @mouseenter="notationread = true"
+              @mouseleave="notationread = false"
+              @click="openHashnode"
+            >
+              Home
+            </div>
+          </RoughNotation>
         </div>
       </header>
 
@@ -241,6 +253,7 @@ export default {
   },
   data() {
     return {
+      notationread: false,
       currentIndex: 0,
       slides: [],
     };
