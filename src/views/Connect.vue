@@ -74,7 +74,7 @@
               </p>
             </div>
             <GoogleMap
-              api-key="AIzaSyCsbns--l53kPssGVEYcCzfsfU4m83kaB4"
+              :api-key="import.meta.env.VITE_GOOGLE_MAP_API_KEY"
               class="h-32 w-full"
               :center="center"
               :zoom="15"
