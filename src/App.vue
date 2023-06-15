@@ -5,6 +5,7 @@ export default {
 
 <template>
   <div id="app">
+    <notifications />
     <router-view />
     <div id="footer" class="text-center py-4 bg-white mt-10">
       Made with ❤️ by 

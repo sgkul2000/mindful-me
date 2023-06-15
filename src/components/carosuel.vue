@@ -59,7 +59,7 @@ export default defineComponent({
     getMaxEmotion(input) {
       let emotion = "happy";
       Object.keys(input).reduce((prev, curr) => {
-        if (typeof input[curr] !== "object") {
+        if (curr !== "stamp") {
           let numVal = Number(input[curr]);
           if (numVal > prev) {
             emotion = curr;

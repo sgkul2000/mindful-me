@@ -48,7 +48,7 @@
             <div @click="trackFlow" class="btn-border">
               Track
             </div>
-            <div class="btn-border">
+            <div @click="$router.push({name: 'report-week'})" class="btn-border">
               View
             </div>
           </div>

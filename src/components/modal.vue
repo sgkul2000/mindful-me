@@ -14,6 +14,7 @@ export default {
       emotionData: {},
       pictureClicked: false,
       responseReceived: false,
+      retry: 0,
     }
   },
   methods: {
@@ -42,7 +43,7 @@ export default {
                 angry: resp.data[0].emotion.angry,
                 anxious: resp.data[0].emotion.fear,
                 neutral: resp.data[0].emotion.neutral,
-              };
+              }
               const userData = await appwrite.getDocument(import.meta.env.VITE_APP_COLLECTION_ID, user['userId']);
               const moods = userData['moods'].map(el => JSON.parse(el));
               if (moods.length > 0) {
@@ -51,7 +52,7 @@ export default {
                   moods.pop();
                 }
               }
-              await appwrite.updateDocument(import.meta.env.VITE_APP_COLLECTION_ID, user['userId'], {
+              appwrite.updateDocument(import.meta.env.VITE_APP_COLLECTION_ID, user['userId'], {
                 moods: [
                   ...userData.moods,
                   JSON.stringify({
@@ -60,7 +61,28 @@ export default {
                   }),
                 ],
               }).then(() => this.$router.push('/'));
-            })
+            }).catch(err => {
+              console.error("here")
+              console.error(err)
+              if (err.response && err.response.data && err.response.data === "Face could not be detected. Please confirm that the picture is a face photo or consider to set enforce_detection param to False.") {
+                if(this.retry < 3) {
+                  this.$notify({
+                    title: 'Error',
+                    text: 'Face could not be detected. Please try again',
+                  });
+                  this.retry +=1;
+                  this.pictureClicked = false;
+                  this.responseReceived = false;
+                  this.clickPicture();
+                } else {
+                  this.$notify({
+                    title: 'Error',
+                    text: 'Face could not be detected',
+                  });
+                  this.$emit('close')
+                }
+              }
+              });
         stream.getTracks().forEach(function (track) {
           track.stop();
         });
@@ -73,19 +95,19 @@ export default {
 
 <template>
   <Transition name="modal">
-    <div v-if="show" class="modal-mask">
+    <div v-if="show" class="modal-mask flex">
       <div class="modal-container">
-        <div v-if="mode === 'option'">
+        <div v-if="mode === 'option'" class="flex flex-col items-center justify-between">
           <div class="header">
-            <h3>Let's see how was your day ?</h3>
+            <h3 class="text-2xl mb-4">Let's see how was your day ?</h3>
           </div>
           <div class="body">
-            <figure @click="clickPicture">
+            <figure @click="clickPicture" class="cursor-pointer px-4">
               <img src="../assets/camera.png" alt="Trulli">
               <figcaption>Click a picture</figcaption>
             </figure>
-            <figure @click="$router.push('/questionnaire')">
-              <img src="../assets/camera.png" alt="Trulli">
+            <figure @click="$router.push('/questionnaire')" class="cursor-pointer px-4">
+              <img src="../assets/desk.png" alt="Trulli">
               <figcaption>Answer a few questions</figcaption>
             </figure>
           </div>
@@ -94,8 +116,8 @@ export default {
           </div>
         </div>
         <div v-else class="flex justify-center items-center flex-col w-full h-full">
-          <div v-if="pictureClicked && !responseReceived">
-            <h1>Loading</h1>
+          <div v-if="pictureClicked && !responseReceived" class="h-32 flex items-center">
+            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
           </div>
           <div v-else-if="responseReceived && pictureClicked" class="w-full flex flex-col items-center justify-center">
             <div class="progress w-full"
@@ -103,13 +125,13 @@ export default {
               <label>{{ objKey }}</label>
               <ProgressComponent class="py-1" classes="h-2" :percent="emotionData[objKey]"/>
             </div>
-            <div class="message w-100 rounded-2xl">
-              Tis data is not 100% accurate!
+            <div class="message w-100 rounded-2xl text-white">
+              This data is not 100% accurate!
             </div>
           </div>
           <div v-else>
             <video id="video" autoplay width="500" height="300" ref="video"></video>
-            <canvas style="display: none" ref="canvas"/>
+            <canvas style="display: none" ref="canvas" />
           </div>
           <div class="footer">
             <button class="modal-default-button" @click="$emit('close')">Close</button>
@@ -145,7 +167,7 @@ export default {
 
 .modal-container {
   width: 50vw;
-  height: 50vh;
+  /* height: 50vh; */
   margin: auto;
   padding: 20px 30px;
   background-color: #fff;
@@ -154,8 +176,8 @@ export default {
   border-radius: 30px;
   transition: all 0.3s ease;
 
-  display: grid;
-  grid-template-rows: 1fr 6fr 1fr;
+  /* display: grid;
+  grid-template-rows: 1fr 6fr 1fr; */
 }
 
 .header {
@@ -215,5 +237,42 @@ export default {
 .modal-leave-to .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+
+/* spinner styles */
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid #36454F;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #36454F transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

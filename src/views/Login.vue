@@ -1,12 +1,19 @@
 <template>
 <div id="login" class="content-wrapper">
-  <div class="flex items-center justify-center flex-col">
-    <h1 class="outline-secondary outline-2 text-7xl mb-10 brand-shadow title-font">Login</h1>
-    <input v-model="email" type="text" id="email" placeholder="Enter your email" class="appearance-none bg-white outline-none mb-3 rounded px-5 py-1" >
-    <input v-model="password" type="password" id="password" placeholder="Enter the password" class="appearance-none bg-white outline-none mb-3 rounded px-5 py-1" >
-    <button @click="login" class="appearance-none rounded-full text-3xl bg-primary text-white px-4 py-.5">
-      next
-    </button>
+  <div class="content-background"></div>
+  <div class="flex flex-col items-center justify-center">
+    <h1 class="brand text-7xl brand-shadow mb-6">Mindful Me</h1>
+    <div class="flex items-center justify-center flex-col rounded-2xl text-charcoal bg-white border border-charcoal p-10">
+        <h1 class="outline-secondary outline-2 text-5xl mb-7 brand-shadow title-font">Login</h1>
+        <input v-model="email" type="text" id="email" placeholder="Enter your email" class="appearance-none bg-slate-100 outline-none mb-3 rounded-lg px-5 py-1" >
+        <input v-model="password" type="password" id="password" placeholder="Enter the password" class="appearance-none bg-slate-100 outline-none mb-3 rounded-lg px-5 py-1" >
+        <RoughNotation class="mr-4" :is-show="notationnext" type="circle">
+          <div class="cursor-pointer text-2xl" @mouseenter="notationnext = true" @mouseleave="notationnext = false" @click="login"
+                >
+            Next
+          </div>
+        </RoughNotation>
+    </div>
   </div>
 </div>
 </template>
@@ -19,6 +26,7 @@ export default {
     return {
       email: "",
       password: "",
+      notationnext: false,
     };
   },
   methods: {
