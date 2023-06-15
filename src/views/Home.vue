@@ -7,7 +7,7 @@
       <div
         class="nav flex flex-row justify-between w-full border-b px-6 border-b-charcoal py-3"
       >
-        <div class="nav-welcome py-1">Hey Iresh, welcome back!</div>
+        <div class="nav-welcome py-1">Hey {{ user.name }}, welcome back!</div>
         <div class="nav-buttons flex flex-row items-center">
           <RoughNotation class="mr-4" :is-show="notationread" type="circle">
             <div
@@ -98,6 +98,7 @@
 <script>
 import api from "../appwrite";
 import Modal from "../components/modal.vue";
+import { mapGetters } from "vuex";
 
 export default {
   name: "home",
@@ -110,6 +111,12 @@ export default {
       notationlogout: false,
     };
   },
+  computed: {
+    ...mapGetters({
+      user: "GET_USER",
+    }),
+  },
+  mounted() {},
   methods: {
     logout() {
       api.deleteCurrentSession();

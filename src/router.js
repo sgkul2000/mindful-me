@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import api from "./appwrite";
+import store from "./store";
 
 const routes = [
   {
@@ -59,6 +60,8 @@ router.beforeEach(async (to, from, next) => {
   let user;
   try {
     user = await api.getAccount();
+    store.commit("SET_USER", user);
+    console.log(user);
   } catch (err) {
     console.error(err);
     if (from.name && (from.name !== "login" || from.name !== "register")) {

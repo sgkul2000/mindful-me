@@ -15,4 +15,7 @@ export default createStore({
       localStorage.setItem("user", JSON.stringify(user));
     },
   },
+  getters: {
+    GET_USER: (state) => state.user,
+  },
 });
