@@ -35,13 +35,13 @@ export default {
     createAccount() {
       api.createAccount(this.email, this.password, this.name).then((res) => {
         this.$store.commit("SET_USER", res);
-        console.log(res)
+        console.log(res['$id'])
         api.createDocument(import.meta.env.VITE_APP_COLLECTION_ID, {
           email: this.email,
           name: this.name,
           moods: [],
           journal: ""
-        }, res['userId']).then((data) => {
+        }, res['$id']).then((data) => {
           this.$notify({
             title: "Account created",
             text: "You will be redirected to the login page.",
