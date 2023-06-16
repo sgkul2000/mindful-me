@@ -77,7 +77,7 @@
               :api-key="api_key"
               class="h-32 w-full"
               :center="center"
-              :zoom="15"
+              :zoom="5"
             >
               <Marker
                 :key="index"
