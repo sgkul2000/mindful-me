@@ -74,7 +74,7 @@
               </p>
             </div>
             <GoogleMap
-              :api-key="import.meta.env.VITE_GOOGLE_MAP_API_KEY"
+              :api-key="api_key"
               class="h-32 w-full"
               :center="center"
               :zoom="15"
@@ -175,6 +175,7 @@ export default {
       markers: [],
       places: [],
       notationread: false,
+      api_key: import.meta.env.VITE_GOOGLE_MAP_API_KEY
     };
   },
 };
