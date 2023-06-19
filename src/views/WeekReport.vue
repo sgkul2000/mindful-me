@@ -190,7 +190,7 @@ export default {
   beforeMount() {
     const user = JSON.parse(localStorage.getItem("user"));
     appwrite
-      .getDocument('648a38b0c47f74084842', user["userId"])
+      .getDocument('648a38b0c47f74084842', user["$id"])
       .then((data) => {
         const moods = data.moods.map((el) => JSON.parse(el));
         this.slides = moods;

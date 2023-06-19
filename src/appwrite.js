@@ -43,13 +43,13 @@ let api = {
     return api.provider().account.deleteSession("current");
   },
 
-  createDocument: (collectionId, data, userId) => {
+  createDocument: (collectionId, data, $id) => {
     return api
       .provider()
       .database.createDocument(
         Server.database,
         collectionId,
-        userId,
+        $id,
         data,
         [
           Permission.read(Role.guests()),
@@ -59,8 +59,8 @@ let api = {
       );
   },
 
-  getDocument: (collectionId, userId) => {
-    return api.provider().database.getDocument(Server.database, collectionId, userId);
+  getDocument: (collectionId, $id) => {
+    return api.provider().database.getDocument(Server.database, collectionId, $id);
   },
 
   listDocuments: (collectionId) => {

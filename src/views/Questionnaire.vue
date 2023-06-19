@@ -65,22 +65,22 @@ export default {
   },
   methods: {
     async handleInput() {
-      switch (this.activeTab) {
+      switch (this.questionIndex) {
         case 0:
-          this.formInput.happy = this.rating_pick * 10;
+          this.formInput.happy = Number(this.rating_pick) * 10;
           break;
         case 1:
-          this.formInput.angry = this.rating_pick * 10;
+          this.formInput.angry = Number(this.rating_pick) * 10;
           break;
         case 2:
-          this.formInput.anxious = this.rating_pick * 10;
+          this.formInput.anxious = Number(this.rating_pick) * 10;
           break;
       }
       if (this.questionIndex !== 2) {
         this.questionIndex++;
       } else {
         const user = JSON.parse(localStorage.getItem('user'))
-        const userData = await appwrite.getDocument('648a38b0c47f74084842', user['userId']);
+        const userData = await appwrite.getDocument('648a38b0c47f74084842', user['$id']);
         const moods = userData['moods'].map(el => JSON.parse(el));
         if(moods.length > 0) {
           const lastDate = new Date(userData.moods.at(-1).stamp);
@@ -88,15 +88,16 @@ export default {
             moods.pop();
           }
         }
-        await appwrite.updateDocument('648a38b0c47f74084842', user['userId'], {
+        await appwrite.updateDocument('648a38b0c47f74084842', user['$id'], {
           moods: [
             ...userData.moods,
             JSON.stringify({
-              ...this.emotionData,
+              ...this.formInput,
               stamp: new Date(),
             }),
           ],
         });
+        this.$router.push('/')
       }
     },
   }
