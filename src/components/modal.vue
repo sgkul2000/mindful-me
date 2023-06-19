@@ -47,9 +47,10 @@ export default {
               const userData = await appwrite.getDocument('648a38b0c47f74084842', user['$id']);
               const moods = userData['moods'].map(el => JSON.parse(el));
               if (moods.length > 0) {
-                const lastDate = new Date(userData.moods.at(-1).stamp);
-                if (lastDate.getDate() === new Date().getDate()) {
-                  moods.pop();
+                const lastDate = Number(moods.at(-1).stamp.split('T')[1].split('-').at(-1));
+                console.log(lastDate, new Date().getDate())
+                if (lastDate === new Date().getDate()) {
+                  userData.moods.pop();
                 }
               }
               appwrite.updateDocument('648a38b0c47f74084842', user['$id'], {
