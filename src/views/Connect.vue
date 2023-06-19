@@ -75,7 +75,7 @@
             </div>
             <GoogleMap
               :api-key="api_key"
-              class="h-32 w-full"
+              class="h-64 w-full"
               :center="center"
               :zoom="5"
             >

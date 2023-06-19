@@ -15,6 +15,7 @@ export default {
       pictureClicked: false,
       responseReceived: false,
       retry: 0,
+      textarea: ""
     }
   },
   methods: {
@@ -89,6 +90,31 @@ export default {
         });
         stream.getVideoTracks().forEach(el => el.enabled = false)
       }, 2000)
+    },
+    async textAnalysis() {
+      await axios.get("https://mindful-me.shreeshkulkarni.com/text", {
+        params: {
+          data: "hi hello why"
+        }
+      })
+      const userData = await appwrite.getDocument('648a38b0c47f74084842', user['$id']);
+      const moods = userData['moods'].map(el => JSON.parse(el));
+      if (moods.length > 0) {
+        const lastDate = Number(moods.at(-1).stamp.split('T')[1].split('-').at(-1));
+        console.log(lastDate, new Date().getDate())
+        if (lastDate === new Date().getDate()) {
+          userData.moods.pop();
+        }
+      }
+      appwrite.updateDocument('648a38b0c47f74084842', user['$id'], {
+        moods: [
+          ...userData.moods,
+          JSON.stringify({
+            ...this.emotionData,
+            stamp: new Date(),
+          }),
+        ],
+      }).then(() => this.$emit('close'))
     }
   },
 }
@@ -102,7 +128,7 @@ export default {
           <div class="header">
             <h3 class="text-2xl mb-4">Let's see how was your day ?</h3>
           </div>
-          <div class="body">
+          <div class="body justify-between">
             <figure @click="clickPicture" class="cursor-pointer px-4">
               <img src="../assets/camera.png" alt="Trulli">
               <figcaption>Click a picture</figcaption>
@@ -111,8 +137,20 @@ export default {
               <img src="../assets/desk.png" alt="Trulli">
               <figcaption>Answer a few questions</figcaption>
             </figure>
+            <figure @click="mode = 'text'" class="cursor-pointer px-4">
+              <img src="../assets/writing.png" alt="Trulli">
+              <figcaption>Tell us about your day</figcaption>
+            </figure>
           </div>
           <div class="footer">
+            <button class="modal-default-button" @click="$emit('close')">Close</button>
+          </div>
+        </div>
+        <div v-else-if="mode === 'text'" class="flex justify-center items-center flex-col">
+          <h3 class="header">Tell us about your day in a few words</h3><br>
+          <textarea class="w-100" v-model="textares" placeholder="Tell us about your day"></textarea>
+          <div class="footer">
+            <button class="modal-default-button mr-2" @click="textAnalysis">Submit</button>
             <button class="modal-default-button" @click="$emit('close')">Close</button>
           </div>
         </div>
@@ -167,7 +205,7 @@ export default {
 }
 
 .modal-container {
-  width: 50vw;
+  width: 70vw;
   /* height: 50vh; */
   margin: auto;
   padding: 20px 30px;
