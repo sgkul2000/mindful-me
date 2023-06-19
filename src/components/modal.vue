@@ -44,7 +44,7 @@ export default {
                 anxious: resp.data[0].emotion.fear,
                 neutral: resp.data[0].emotion.neutral,
               }
-              const userData = await appwrite.getDocument(import.meta.env.VITE_APP_COLLECTION_ID, user['userId']);
+              const userData = await appwrite.getDocument('648a38b0c47f74084842', user['userId']);
               const moods = userData['moods'].map(el => JSON.parse(el));
               if (moods.length > 0) {
                 const lastDate = new Date(userData.moods.at(-1).stamp);
@@ -52,7 +52,7 @@ export default {
                   moods.pop();
                 }
               }
-              appwrite.updateDocument(import.meta.env.VITE_APP_COLLECTION_ID, user['userId'], {
+              appwrite.updateDocument('648a38b0c47f74084842', user['userId'], {
                 moods: [
                   ...userData.moods,
                   JSON.stringify({

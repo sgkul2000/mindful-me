@@ -8,7 +8,7 @@
             class="cursor-pointer"
             @mouseenter="notationread = true"
             @mouseleave="notationread = false"
-            @click="openHashnode"
+            @click="$router.push('/')"
           >
             Home
           </div>

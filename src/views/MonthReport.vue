@@ -133,7 +133,7 @@ export default {
   beforeMount() {
     const user = JSON.parse(localStorage.getItem("user"));
     appwrite
-      .getDocument(import.meta.env.VITE_APP_COLLECTION_ID, user["userId"])
+      .getDocument('648a38b0c47f74084842', user["userId"])
       .then((data) => {
         const moods = data.moods.map((el) => JSON.parse(el));
         this.slides = moods.slice(-30);

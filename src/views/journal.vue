@@ -28,7 +28,7 @@ export default defineComponent({
       if(lastPush === null || Date.now() - lastPush > 60000) {
         const data = params.editor.getJSON()
         const user = JSON.parse(localStorage.getItem('user'));
-        appwrite.updateDocument(import.meta.env.VITE_APP_COLLECTION_ID, user['userId'], {
+        appwrite.updateDocument('648a38b0c47f74084842', user['userId'], {
           journal: JSON.stringify(data)
         })
       }
@@ -48,7 +48,7 @@ export default defineComponent({
 
   mounted() {
 
-    appwrite.getDocument(import.meta.env.VITE_APP_COLLECTION_ID, this.user['userId']).then((data) => {
+    appwrite.getDocument('648a38b0c47f74084842', this.user['userId']).then((data) => {
       if(data["journal"] !== "") {
         this.editor.commands.setContent(JSON.parse(data['journal']))
       }
@@ -61,7 +61,7 @@ export default defineComponent({
       if(this.lastPush === null || Date.now() - this.lastPush > 60000) {
         const data = params.editor.getJSON()
         const user = JSON.parse(localStorage.getItem('user'));
-        appwrite.updateDocument(import.meta.env.VITE_APP_COLLECTION_ID, user['userId'], {
+        appwrite.updateDocument('648a38b0c47f74084842', user['userId'], {
           journal: JSON.stringify(data)
         })
       }
